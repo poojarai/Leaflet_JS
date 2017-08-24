@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<head>
+
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="heatmap.js"></script>
+    <script src="leaflet-heatmap.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <style>
+        #mapid {
+            height: 940px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mapid"></div>
+</body>
+<script>
+    var latlng = [{
+        "lat": 29.854263,
+        "lng": 77.888000
+    },
+    {
+        "lat": 23.173939,
+        "lng": 81.565125
+    }, {
+        "lat": 15.812074,
+        "lng": 80.355377
+    }, {
+        "lat": 10.311879,
+        "lng": 76.331978
+    }, {
+        "lat": 21.961946,
+        "lng": 70.792297
+    }, {
+        "lat": 27.897551,
+        "lng": 77.384117
+    }
+
+    ]
+    var mymap = L.map('mapid').setView([21.7679, 78.8718], 5);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        id: 'mapbox.streets'
+    }).addTo(mymap);
+
+    // mymap.locate({
+    //	setView: true,
+    //	watch: true,
+    //	timeout: 60000,
+    //	enableHighAccuracy: true
+    //});
+
+
+    var popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent("Clicked at " + e.latlng.toString())
+            .openOn(mymap);
+    }
+
+
+    // var marker = L.marker([23.64452, 76.15723]).addTo(mymap);
+
+
+    function getCircleMarkerGroup() {
+        var Circlelatlng =
+            [
+                { "lat": 29.854263, "lng": 77.888000 },
+                { "lat": 23.173939, "lng": 81.565125 },
+                { "lat": 15.812074, "lng": 80.355377 },
+                { "lat": 10.311879, "lng": 76.331978 },
+                { "lat": 21.961946, "lng": 70.792297 },
+                { "lat": 27.897551, "lng": 77.384117 },
+                { "lat": 23.12021546, "lng": 76.5527343 },
+                { "lat": 24.607069137709708, "lng": 77.65136718750001 }, { "lat": 22.471954507739227, "lng": 76.90429687500001 }, { "lat": 19.766703551716976, "lng": 75.19042968750001 }, { "lat": 25.64152637306577, "lng": 73.78417968750001 }, { "lat": 24.16680208530324, "lng": 72.02636718750001 }, { "lat": 25.562265014427492, "lng": 85.2099609375 }, { "lat": 19.766703551716976, "lng": 83.58398437500001 }, { "lat": 26.31311263768267, "lng": 82.00195312500001 }, { "lat": 16.678293098288513, "lng": 76.42089843750001 }, { "lat": 15.326571801420842, "lng": 78.00292968750001 }, { "lat": 14.349547837185375, "lng": 76.72851562500001 }, { "lat": 11.350796722383672, "lng": 78.486328125 }, { "lat": 16.46769474828897, "lng": 74.66308593750001 }, { "lat": 25.720735134412106, "lng": 91.40625000000001 }, { "lat": 26.58852714730864, "lng": 93.7353515625 }, { "lat": 24.926294766395593, "lng": 94.48242187500001 }, { "lat": 26.86328062676624, "lng": 70.62011718750001 }, { "lat": 26.07652055985697, "lng": 93.69140625 }, { "lat": 25.16517336866393, "lng": 93.33984375000001 }, { "lat": 23.56398712845123, "lng": 92.63671875000001 }, { "lat": 22.350075806124867, "lng": 93.076171875 }, { "lat": 26.86328062676624, "lng": 78.66210937500001 }, { "lat": 25.48295117535531, "lng": 75.27832031250001 }, { "lat": 23.200960808078566, "lng": 74.48730468750001 }, { "lat": 21.3303150734318, "lng": 79.6728515625 }, { "lat": 19.72534224805787, "lng": 81.12304687500001 }, { "lat": 19.72534224805787, "lng": 81.12304687500001 }, { "lat": 19.84939395842279, "lng": 77.67333984375001 }, { "lat": 33.61461929233378, "lng": 75.05859375000001 }, { "lat": 34.452218472826566, "lng": 77.73925781250001 }, { "lat": 33.32134852669881, "lng": 78.04687500000001 }, { "lat": 33.32134852669881, "lng": 78.04687500000001 }, { "lat": 33.02708758002874, "lng": 77.62939453125001 }, { "lat": 32.731840896865684, "lng": 76.06933593750001 }, { "lat": 34.994003757575776, "lng": 79.45312500000001 }, { "lat": 31.970803930433096, "lng": 77.65136718750001 }, { "lat": 31.522361470421437, "lng": 76.09130859375001 }
+            ]
+
+        var markerGroup = [];
+        for (i = 0; i < Circlelatlng.length; i++) {
+            var marker;
+            marker = L.circleMarker([Circlelatlng[i].lat, Circlelatlng[i].lng], {
+                color: "red",
+                radius: 2,
+                fillColor: "red",
+                opacity: 1
+            });
+            marker.bindPopup("Lat:" + Circlelatlng[i].lat.toFixed(4) + ",Lng:" + Circlelatlng[i].lng.toFixed(4));
+            marker.on('mouseover', function (e) {
+                this.openPopup();
+            });
+            marker.on('mouseout', function (e) {
+                this.closePopup();
+            });
+            markerGroup.push(marker);
+        }
+        return markerGroup;
+    }
+    function getMarkerGroup() {
+        var markerGroup = [];
+        for (i = 0; i < latlng.length; i++) {
+            //console.log(latlng[i].lat);
+            var l;
+            l = L.marker([latlng[i].lat, latlng[i].lng]);
+            markerGroup.push(l);
+        }
+        return markerGroup;
+    }
+    var binOnMap = L.layerGroup(getCircleMarkerGroup());
+
+    if (mymap.hasLayer(binOnMap)) {
+        mymap.removeLayer();
+    }
+    mymap.addLayer(binOnMap);
+    mymap.addLayer(L.layerGroup(getMarkerGroup()))
+    //mymap.L.layerGroup(markerGroup);
+
+    var latlngs = [
+        [
+            [37, -109.05],
+            [41, -109.03],
+            [41, -102.05],
+            [37, -102.04]
+        ], // outer ring
+        [
+            [37.29, -108.58],
+            [40.71, -108.58],
+            [40.71, -102.50],
+            [37.29, -102.50]
+        ] // hole
+    ];
+
+    var polygon = L.polygon(latlngs, {
+        color: 'red'
+    }).addTo(mymap);
+    // mymap.fitBounds(polygon.getBounds());
+
+
+    var data = [];
+    mymap.on('click', function (e) {
+        // Place marker
+        var addMarker ;
+        addMarker =L.marker(e.latlng,{
+            draggable: true,
+            title :"Custom Marker"
+        }).addTo(mymap).bindPopup(e.latlng.toString()).openPopup();
+        
+        // Ajax query to save the values:
+        data.push({
+            "lat": e.latlng.lat,
+            "lng": e.latlng.lng
+        })
+
+        addMarker.on("dragend", function (ev) {
+            var chagedPos = ev.target.getLatLng();
+            this.bindPopup(chagedPos.toString()).openPopup();
+        });
+
+
+        // console.log(JSON.stringify(data));
+
+        //  var request = new XMLHttpRequest();
+        //   request.open('POST', '/my/url', true);
+        //      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        // request.send(data);
+    });
+    var testData = {
+        max: 319,
+        data: [{ lat: 25.799891182, lng: 74.794921875, count: 3 }, { lat: 20.13847038, lng: 76.33300781, count: 1 }, { lat: 22.431340156, lng: 86.396484, count: 6 }, { lat: 20.83827780605896, lng: 80.24414062500, count: 7 }, { lat: 16.4676947, lng: 75.45410156, count: 4 }, {
+            lat:
+            14.98723952, lng: 78.6181640, count: 5
+        }, { lat: 17.93692863, lng: 78.090820312500, count: 5 }]
+    };
+    // var r;
+    // if(testData.data[0].count>3){
+    //     r = 45;
+    // } else {
+    //     r=25;
+    // }
+    var cfg = {
+        // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+        // if scaleRadius is false it will be the constant radius used in pixels
+        "radius": 50,
+        "maxOpacity": 1,
+        // scales the radius based on map zoom
+        "scaleRadius": false,
+        // if set to false the heatmap uses the global maximum for colorization
+        // if activated: uses the data maximum within the current map boundaries 
+        //   (there will always be a red spot with useLocalExtremas true)
+        "useLocalExtrema": true,
+        // which field name in your data represents the latitude - default "lat"
+        latField: 'lat',
+        // which field name in your data represents the longitude - default "lng"
+        lngField: 'lng',
+        // which field name in your data represents the data value - default "value"
+        valueField: 'count',
+        blur: 0.95,
+        gradient: {
+            '0.2': 'purple',
+            '0.4': 'blue',
+            '.5': 'yellow',
+            '.8': 'orange',
+            '.95': 'red'
+        }
+    };
+
+    var heatmapLayer = new HeatmapOverlay(cfg);
+    heatmapLayer.addTo(mymap);
+    heatmapLayer.setData(testData);
+
+
+
+
+
+    var HttpClient = function () {
+        this.get = function (aUrl, aCallback) {
+            var anHttpRequest = new XMLHttpRequest();
+            anHttpRequest.onreadystatechange = function () {
+                if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+                    aCallback(anHttpRequest.responseText);
+            }
+
+            anHttpRequest.open("GET", aUrl, true);
+            anHttpRequest.send(null);
+        }
+    }
+    var client = new HttpClient();
+    client.get('us-state.json', function (response) {
+        // do something with response
+        console.log(response)
+    });
+
+</script>
+
+</html>
